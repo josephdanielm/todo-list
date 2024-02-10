@@ -2,8 +2,6 @@ import Project from './project.js';
 
 export default class UI {
 
-
-
     static displayProjects(projects) {
         const projectsContainer = document.getElementById('projects-container');
         projectsContainer.innerHTML = ''; // Clear the container
@@ -37,6 +35,22 @@ export default class UI {
         });
     }
 
+    static handleEditDone(todoElement) {
+        const editedTitle = todoElement.querySelector('.edit-title').value;
+        const editedDescription = todoElement.querySelector('.edit-description').value;
+        const editedDueDate = todoElement.querySelector('.edit-due-date').value;
+        const editedPriority = todoElement.querySelector('.edit-priority').value;
+
+        // Update the todo item properties with the new values
+        todoElement.innerHTML = `
+            <h3 class="todo-title">${editedTitle}</h3>
+            <p class="todo-description">Description: ${editedDescription}</p>
+            <p class="todo-due-date">Due Date: ${editedDueDate}</p>
+            <p class="todo-priority">Priority: ${editedPriority}</p>
+            <button class="btn-edit-todo">Edit</button>
+        `;
+    }
+
     static displayTodos(projectName, projectsList) {
         const project = projectsList.find(project => project.name === projectName);
         const todosContainer = document.getElementById('todos-container');
@@ -60,7 +74,7 @@ export default class UI {
         addButton.textContent = 'Add New Todo';
         addButton.classList.add('btn-add-todo');
         addButton.addEventListener('click', function () {
-            UI.displayAddTodoForm(projectName);
+            UI.displayAddTodoForm(projectName, projectsList);
         });
         todosContainer.appendChild(addButton);
     }
@@ -104,6 +118,62 @@ export default class UI {
         });
     }
 
+    static displayAddTodoForm(projectName, projectsList) {
+        const todosContainer = document.getElementById('todos-container');
+
+        const formElement = document.createElement('div');
+        formElement.innerHTML = `
+            <h3>Add New Todo</h3>
+            <label for="todo-title">Title:</label>
+            <input type="text" id="todo-title" class="add-todo-title"><br>
+            <label for="todo-description">Description:</label>
+            <textarea id="todo-description" class="add-todo-description"></textarea><br>
+            <label for="todo-due-date">Due Date:</label>
+            <input type="text" id="todo-due-date" class="add-todo-due-date"><br>
+            <label for="todo-priority">Priority:</label>
+            <select id="todo-priority" class="add-todo-priority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select><br>
+            <button class="btn-submit-todo">Add Todo</button>
+        `;
+
+        const addButton = formElement.querySelector('.btn-submit-todo');
+        addButton.addEventListener('click', function () {
+            const title = formElement.querySelector('.add-todo-title').value;
+            const description = formElement.querySelector('.add-todo-description').value;
+            const dueDate = formElement.querySelector('.add-todo-due-date').value;
+            const priority = formElement.querySelector('.add-todo-priority').value;
+
+            // Create a new todo object
+            const newTodo = {
+                title: title,
+                description: description,
+                dueDate: dueDate,
+                priority: priority
+            };
+
+            // Find the project in the projectsList
+            const project = projectsList.find(project => project.name === projectName);
+            if (project) {
+                // Add the new todo to the project's todo list
+                project.todoList.push(newTodo);
+                // Update the display of todos in the todosContainer
+                UI.displayTodos(projectName, projectsList);
+            } else {
+                console.error(`Project '${projectName}' not found.`);
+            }
+
+            // Clear the form fields
+            formElement.querySelector('.add-todo-title').value = '';
+            formElement.querySelector('.add-todo-description').value = '';
+            formElement.querySelector('.add-todo-due-date').value = '';
+            formElement.querySelector('.add-todo-priority').value = 'low'; // Reset priority to low
+        });
+
+        todosContainer.appendChild(formElement);
+    }
 
 }
 
