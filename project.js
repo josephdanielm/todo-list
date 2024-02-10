@@ -9,7 +9,7 @@ export default class Project {
     }
 
     removeTodo(todo) {
-        const todoIndex = this.todos.indexOf(todo);
+        const todoIndex = this.todoList.indexOf(todo);
         if (todoIndex !== -1) {
             this.todos.splice(todoIndex, 1);
         }
@@ -25,5 +25,13 @@ export default class Project {
 
     getPendingTodos() {
         return this.todoList.filter(todo => !todo.completed);
+    }
+
+    getTodoByTitle(title) {
+        return this.todoList.find(todo => todo.title === title);
+    }
+
+    getTodoIndex(todo) {
+        return this.todoList.indexOf(todo);
     }
 }

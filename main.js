@@ -1,32 +1,32 @@
 import './style.css';
-import Todo from './todo.js';
-import Project from './project.js';
 import UI from './ui.js';
+import Project from './project.js';
+import Todo from './todo.js';
+
 
 const defaultTodo = new Todo('Default Todo', 'Description for this Todo goes here!', '01-01-2000', 'high');
 const defaultProject = new Project('Default Project');
-const projectsList = [];
-
-
 defaultProject.addTodo(defaultTodo);
+const projectsList = [defaultProject];
 
-projectsList.push(defaultProject);
 
 UI.displayProjects(projectsList);
+UI.handleEditTodo(projectsList);
 
-document.addEventListener('DOMContentLoaded', function () {
-  const todosContainer = document.getElementById('todos-container');
+function handleEditDone(todoElement) {
+  const editedTitle = todoElement.querySelector('.edit-title').value;
+  const editedDescription = todoElement.querySelector('.edit-description').value;
+  const editedDueDate = todoElement.querySelector('.edit-due-date').value;
+  const editedPriority = todoElement.querySelector('.edit-priority').value;
 
-  // Event delegation for edit and delete buttons
-  todosContainer.addEventListener('click', function (event) {
-    const targetButton = event.target;
+  // Update the todo item properties with the new values
+  todoElement.innerHTML = `
+      <h3 class="todo-title">${editedTitle}</h3>
+      <p class="todo-description">Description: ${editedDescription}</p>
+      <p class="todo-due-date">Due Date: ${editedDueDate}</p>
+      <p class="todo-priority">Priority: ${editedPriority}</p>
+      <button class="btn-edit-todo">Edit</button>
+  `;
+}
 
-    if (targetButton.classList.contains('edit-todo-button')) {
-      const todoTitle = targetButton.getAttribute('data-todo-title');
-      UI.editTodo(todoTitle);
-    } else if (targetButton.classList.contains('delete-todo-button')) {
-      const todoTitle = targetButton.getAttribute('data-todo-title');
-      UI.deleteTodo(todoTitle);
-    }
-  });
-});
+UI.handleEditDone = handleEditDone;

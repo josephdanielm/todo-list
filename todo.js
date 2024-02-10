@@ -18,4 +18,8 @@ export default class Todo {
         this.dueDate = newDueDate;
         this.priority = newPriority;
     }
+
+    getTodoName() {
+        return this.title;
+    }
 }
