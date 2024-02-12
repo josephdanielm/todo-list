@@ -11,8 +11,14 @@ export default class UI {
                 projectElement.classList.add('project-item');
                 projectElement.innerHTML = `
                     <h2>${project.name}</h2>
-                    <button class="btn-view-project">View Project</button>
                 `;
+
+                // Add event listener to the project element
+                projectElement.addEventListener('click', function () {
+                    // Call a function to handle viewing the project
+                    UI.displayTodos(project.name, projects);
+                });
+
                 projectsContainer.appendChild(projectElement);
             });
         } else {
