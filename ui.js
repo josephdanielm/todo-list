@@ -8,6 +8,7 @@ export default class UI {
         if (projects) {
             projects.forEach(project => {
                 const projectElement = document.createElement('div');
+                projectElement.classList.add('project-item');
                 projectElement.innerHTML = `
                     <h2>${project.name}</h2>
                     <button class="btn-view-project">View Project</button>
@@ -31,6 +32,7 @@ export default class UI {
         const projectsContainer = document.getElementById('projects-container');
 
         const formElement = document.createElement('div');
+        formElement.classList.add('add-project-form');
         formElement.innerHTML = `
             <h3>Add New Project</h3>
             <label for="project-name">Project Name:</label>
@@ -62,6 +64,7 @@ export default class UI {
                 UI.displayTodos(projectName, projects);
             } else if (event.target && event.target.classList.contains('btn-edit-todo')) {
                 const todoElement = event.target.closest('.todo-item');
+                todoElement.classList.add('editing-todo');
                 const todoTitle = todoElement.querySelector('.todo-title').textContent;
                 const todoDescription = todoElement.querySelector('.todo-description').textContent;
                 const todoDueDate = todoElement.querySelector('.todo-due-date').textContent;
@@ -86,6 +89,23 @@ export default class UI {
             <p class="todo-priority">Priority: ${editedPriority}</p>
             <button class="btn-edit-todo">Edit</button>
         `;
+
+        todoElement.classList.remove('editing-todo');
+    }
+
+    static displayAddTodoButton(projectName, projects) {
+        const todosContainer = document.getElementById('todos-container');
+
+        const addButton = document.createElement('button');
+        addButton.textContent = 'Add New Todo';
+        addButton.classList.add('btn-add-todo');
+        addButton.addEventListener('click', function () {
+            addButton.style.display = 'none'; // Hide the button when clicked
+            UI.displayAddTodoForm(projectName, projects);
+        });
+
+        // Append the "Add New Todo" button to the todos container
+        todosContainer.appendChild(addButton);
     }
 
     static displayTodos(projectName, projects) {
@@ -106,13 +126,8 @@ export default class UI {
             todosContainer.appendChild(todoElement);
         });
 
-        const addButton = document.createElement('button');
-        addButton.textContent = 'Add New Todo';
-        addButton.classList.add('btn-add-todo');
-        addButton.addEventListener('click', function () {
-            UI.displayAddTodoForm(projectName, projects);
-        });
-        todosContainer.appendChild(addButton);
+        // Call the method to display the "Add New Todo" button
+        UI.displayAddTodoButton(projectName, projects);
     }
 
     static displayEditForm(todoElement, title, description, dueDate, priority) {
@@ -120,23 +135,16 @@ export default class UI {
         dueDate = dueDate.replace(/^due date: /i, '');
 
         todoElement.innerHTML = `
-            <label for="edit-title">Title:</label>
-            <input type="text" id="edit-title" class="edit-title" value="${title}"><br>
-            <label for="edit-description">Description:</label>
-            <textarea id="edit-description" class="edit-description">${description}</textarea><br>
-            <label for="edit-due-date">Due Date:</label>
-            <input type="text" id="edit-due-date" class="edit-due-date" value="${dueDate}"><br>
-            <label for="edit-priority">Priority:</label>
-            <select id="edit-priority" class="edit-priority">
-                <option value="low" ${priority === 'low' ? 'selected' : ''}>Low</option>
-                <option value="medium" ${priority === 'medium' ? 'selected' : ''}>Medium</option>
-                <option value="high" ${priority === 'high' ? 'selected' : ''}>High</option>
-            </select><br>
-            <button class="btn-done-edit">Done</button>
-        `;
-
-        const priorityDropdown = todoElement.querySelector('.edit-priority');
-        priorityDropdown.value = priority;
+        <input type="text" class="edit-input edit-title" value="${title}">
+        <textarea class="edit-input edit-description">${description}</textarea>
+        <input type="text" class="edit-input edit-due-date" value="${dueDate}">
+        <select class="edit-input edit-priority">
+            <option value="low" ${priority === 'low' ? 'selected' : ''}>Low</option>
+            <option value="medium" ${priority === 'medium' ? 'selected' : ''}>Medium</option>
+            <option value="high" ${priority === 'high' ? 'selected' : ''}>High</option>
+        </select>
+        <button class="btn-done-edit">Done</button>
+    `;
 
         const doneButton = todoElement.querySelector('.btn-done-edit');
         doneButton.addEventListener('click', function () {
@@ -148,6 +156,7 @@ export default class UI {
         const todosContainer = document.getElementById('todos-container');
 
         const formElement = document.createElement('div');
+        formElement.classList.add('add-todo-form');
         formElement.innerHTML = `
             <h3>Add New Todo</h3>
             <label for="todo-title">Title:</label>
