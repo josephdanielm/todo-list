@@ -7,19 +7,24 @@ export default class Todo {
         this.completed = false;
     }
 
-    markCompleted() {
-        this.completed = true;
-        console.log(`${this.title} has been completed`);
+    editDescription(newDescription) {
+        this.description = newDescription;
     }
 
-    editTodo(newTitle, newDescription, newDueDate, newPriority) {
-        this.title = newTitle;
-        this.description = newDescription;
+    editDueDate(newDueDate) {
         this.dueDate = newDueDate;
+    }
+
+    editTitle(newTitle) {
+        this.title = newTitle;
+    }
+
+    editPriority(newPriority) {
         this.priority = newPriority;
     }
 
-    getTodoName() {
-        return this.title;
+    markCompleted() {
+        this.completed = true;
+        console.log(`${this.title} has been completed`);
     }
 }

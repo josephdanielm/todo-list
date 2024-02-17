@@ -51,8 +51,8 @@ input {
   padding: 1rem;
 }
 
-/* Projects panel styles */
-#project-panel {
+/* Display panel styles */
+#display-panel {
   background-color: #fff;
   padding: 1rem;
 }
@@ -89,6 +89,9 @@ input {
 
 /* Todo item styles */
 .todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #fff;
   /* White background */
   padding: 0.5rem;
@@ -98,16 +101,6 @@ input {
   /* Shadow effect */
 }
 
-/* Todo item text styles */
 .todo-title {
   font-weight: bold;
-  margin-bottom: 0.25rem;
-  /* Smaller margin */
-}
-
-.todo-description,
-.todo-due-date,
-.todo-priority {
-  margin-bottom: 0.25rem;
-  /* Smaller margin */
 }

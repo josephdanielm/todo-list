@@ -1,14 +1,21 @@
 import './style.css';
-import UI from './ui.js';
-import Project from './project.js';
-import Todo from './todo.js';
+import { createProject, deleteProject, getAllProjects, getProjectByName } from './projectService.js';
 
-let projectsList = [];
 
-const defaultTodo = new Todo('Default Todo', 'Description for this Todo goes here!', '01-01-2000', 'high');
-const defaultProject = new Project('Default Project');
-defaultProject.addTodo(defaultTodo);
-projectsList.push(defaultProject);
 
-UI.displayProjects(projectsList);
-UI.handleEditTodo(projectsList);
+const defaultProject = createProject('Default Project');
+
+const defaultTodo = defaultProject.addTodo(
+    'Default Todo',
+    'Description for this Todo goes here!',
+    '01-01-2000',
+    'high'
+);
+
+
+
+console.table(getAllProjects());
+
+deleteProject(defaultProject);
+
+console.table(getAllProjects());

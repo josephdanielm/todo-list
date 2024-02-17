@@ -1,17 +1,21 @@
+import Todo from './todo.js';
+
 export default class Project {
     constructor(name) {
         this.name = name;
         this.todoList = [];
     }
 
-    addTodo(todo) {
-        this.todoList.push(todo);
+    addTodo(title, description, dueDate, priority) {
+        const newTodo = new Todo(title, description, dueDate, priority);
+        this.todoList.push(newTodo);
+        return newTodo;
     }
 
-    removeTodo(todo) {
-        const todoIndex = this.todoList.indexOf(todo);
+    deleteTodo(todoObject) {
+        const todoIndex = this.todoList.indexOf(todoObject);
         if (todoIndex !== -1) {
-            this.todos.splice(todoIndex, 1);
+            this.todoList.splice(todoIndex, 1);
         }
     }
 
@@ -19,19 +23,15 @@ export default class Project {
         return this.todoList;
     }
 
-    getCompletedTodos() {
-        return this.todoList.filter(todo => todo.completed);
-    }
-
-    getPendingTodos() {
-        return this.todoList.filter(todo => !todo.completed);
-    }
-
     getTodoByTitle(title) {
         return this.todoList.find(todo => todo.title === title);
     }
 
-    getTodoIndex(todo) {
-        return this.todoList.indexOf(todo);
+    getCompletedTodos() {
+        return this.todoList.filter(todo => todo.completed);
+    }
+
+    getUncompletedTodos() {
+        return this.todoList.filter(todo => !todo.completed);
     }
 }
