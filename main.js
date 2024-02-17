@@ -1,10 +1,8 @@
 import './style.css';
 import { createProject, deleteProject, getAllProjects, getProjectByName } from './projectService.js';
-
-
+import UI from './ui.js';
 
 const defaultProject = createProject('Default Project');
-
 const defaultTodo = defaultProject.addTodo(
     'Default Todo',
     'Description for this Todo goes here!',
@@ -13,9 +11,4 @@ const defaultTodo = defaultProject.addTodo(
 );
 
 
-
-console.table(getAllProjects());
-
-deleteProject(defaultProject);
-
-console.table(getAllProjects());
+UI.initRender();
