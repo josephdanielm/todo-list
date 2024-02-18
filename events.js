@@ -15,32 +15,46 @@ export function handleProjectClick(project) {
 
 }
 
+let isAddingProject = false; // Add a flag to track if project addition is in progress
+
 export function handleAddProject() {
     console.log('Adding project...');
 
     const addProjectBtn = document.querySelector('.add-project');
-    const projectNameInput = document.createElement('input');
-    projectNameInput.setAttribute('type', 'text');
-    projectNameInput.setAttribute('placeholder', 'Name');
 
-    addProjectBtn.textContent = 'Done';
-    addProjectBtn.removeEventListener('click', handleAddProject);
+    if (!isAddingProject) {
+        // Change button text to "Done" and insert input field
+        addProjectBtn.textContent = 'Done';
+        const inputField = document.createElement('input');
+        inputField.setAttribute('type', 'text');
+        inputField.setAttribute('placeholder', 'Name');
+        addProjectBtn.parentNode.insertBefore(inputField, addProjectBtn);
+        inputField.focus();
 
-    addProjectBtn.addEventListener('click', () => {
-        const inputValue = projectNameInput.value.trim();
+        isAddingProject = true;
+    } else {
+        const inputField = addProjectBtn.previousSibling;
 
-        if (inputValue) {
-            const createdProject = createProject(inputValue);
-            renderProjects(getAllProjects());
-            setCurrentProject(createdProject);
-            renderTodos(getCurrentProject().todoList);
-            console.log(`${getCurrentProject().name} is the current project.`)
+        // If the input field is empty, revert back to "Add Project" button without creating a project
+        if (!inputField.value.trim()) {
+            addProjectBtn.textContent = 'Add Project';
+            inputField.remove();
+            isAddingProject = false;
+            return;
         }
 
-    });
+        // Create the project
+        const createdProject = createProject(inputField.value.trim());
+        renderProjects(getAllProjects());
+        setCurrentProject(createdProject);
+        renderTodos(getCurrentProject().todoList);
+        console.log(`${getCurrentProject().name} is the current project.`)
 
-    addProjectBtn.parentNode.insertBefore(projectNameInput, addProjectBtn);
-    projectNameInput.focus();
+        // Revert back to "Add Project" button
+        addProjectBtn.textContent = 'Add Project';
+        inputField.remove();
+        isAddingProject = false;
+    }
 }
 
 export function handleTodoDetailClick(element, area, todo) {
@@ -127,4 +141,15 @@ function handleCreateTodoClick() {
     renderTodos(currentProject.todoList);
     renderTodoLogicPanel();
 
+}
+
+// Function to handle "Done" button click for todos
+export function handleTodoDone(todo) {
+    const currentProject = getCurrentProject();
+    console.log(currentProject);
+    currentProject.deleteTodo(todo); // Remove todo from the project
+
+    // Render updated todos and todo logic panel
+    renderTodos(currentProject.todoList);
+    renderTodoLogicPanel();
 }

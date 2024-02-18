@@ -1,4 +1,4 @@
-import { handleProjectClick, handleAddProject, handleTodoDetailClick, handleAddTodoClick } from "./events";
+import { handleProjectClick, handleAddProject, handleTodoDetailClick, handleAddTodoClick, handleTodoDone } from "./events";
 import { getCurrentProject, setCurrentProject } from "./currentProject";
 
 
@@ -97,10 +97,19 @@ export function renderTodos(todos) {
             handleTodoDetailClick(priorityArea, 'priority', todo);
         });
 
+        // Done button
+        const doneButton = document.createElement('button');
+        doneButton.textContent = 'Done';
+        doneButton.classList.add('todo-done-button');
+        doneButton.addEventListener('click', () => {
+            handleTodoDone(todo);
+        });
+
         todoItem.appendChild(titleArea);
         todoItem.appendChild(descriptionArea);
         todoItem.appendChild(dueDateArea);
         todoItem.appendChild(priorityArea);
+        todoItem.appendChild(doneButton);
 
 
         todosContainer.appendChild(todoItem);
