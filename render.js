@@ -1,3 +1,5 @@
+import { handleProjectClick, handleAddProject } from "./events";
+
 export function renderProjects(projects) {
     const projectsContainer = document.getElementById('projects-container');
 
@@ -11,13 +13,22 @@ export function renderProjects(projects) {
         <h1 class='project-item-title'>${project.name}</h1>
         `;
 
-        // projectItem.addEventListener('click', () => {
-        //     handleProjectClick(project);
-        // });
+        projectItem.addEventListener('click', () => {
+            handleProjectClick(project);
+        });
 
         projectsContainer.appendChild(projectItem);
 
     });
+
+    const addProject = document.createElement('div');
+    addProject.textContent = 'Add Project';
+    addProject.classList.add('add-project');
+    addProject.addEventListener('click', () => {
+        handleAddProject();
+    })
+
+    projectsContainer.appendChild(addProject);
 }
 
 

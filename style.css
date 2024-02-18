@@ -82,6 +82,21 @@ input {
   /* Darker shade of gray */
 }
 
+.add-project {
+  cursor: pointer;
+  color: black;
+  background-color: #FFFFFF;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 5px;
+  border: 1px solid #FFFFFF;
+  border-radius: 5px;
+}
+
+.add-project:hover {
+  background-color: #d0d0d0;
+}
+
 /* Todos container styles */
 #todos-container {
   padding: 1rem;
