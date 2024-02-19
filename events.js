@@ -1,21 +1,20 @@
 import { renderTodos, renderProjects, renderTodoLogicPanel } from "./render";
 import { editTodo } from "./todoService.js";
-import { createProject, getAllProjects, getProjectByName } from "./projectService";
+import { createProject, getAllProjects, writeProjectsToLocal } from "./projectService";
 import { getCurrentProject, setCurrentProject } from "./currentProject.js";
-import Project from "./project.js";
+import { writeToLocalStorage, readFromLocalStorage } from "./storage.js";
 
 let isAddingTodo = false;
-
+let isAddingProject = false;
 
 export function handleProjectClick(project) {
     console.log('Project clicked:', project.name);
 
     setCurrentProject(project);
     renderTodos(project.todoList);
-
+    writeToLocalStorage("currentProject", project);
+    console.log(readFromLocalStorage("currentProject"));
 }
-
-let isAddingProject = false; // Add a flag to track if project addition is in progress
 
 export function handleAddProject() {
     console.log('Adding project...');
@@ -68,6 +67,7 @@ export function handleTodoDetailClick(element, area, todo) {
         const newValue = inputField.value.trim();
         if (newValue !== currentValue) {
             editTodo(todo, { [area]: newValue });
+            writeProjectsToLocal();
             renderTodos(getCurrentProject().todoList);
         }
 
@@ -136,11 +136,11 @@ function handleCreateTodoClick() {
     // Create new todo and add it to the current project
     const currentProject = getCurrentProject();
     currentProject.addTodo(title, description, dueDate, priority);
+    writeProjectsToLocal();
 
     // Render updated todos and todo logic panel
     renderTodos(currentProject.todoList);
     renderTodoLogicPanel();
-
 }
 
 // Function to handle "Done" button click for todos
@@ -148,6 +148,7 @@ export function handleTodoDone(todo) {
     const currentProject = getCurrentProject();
     console.log(currentProject);
     currentProject.deleteTodo(todo); // Remove todo from the project
+    writeProjectsToLocal();
 
     // Render updated todos and todo logic panel
     renderTodos(currentProject.todoList);

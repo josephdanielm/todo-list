@@ -9,7 +9,7 @@ export default class UI {
     static initRender() {
         renderProjects(getAllProjects());
         setCurrentProject(getAllProjects()[0]);
-        renderTodos(getCurrentProject().todoList);
+        renderTodos(getAllProjects()[0].todoList);
         renderTodoLogicPanel();
     }
 

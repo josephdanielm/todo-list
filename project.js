@@ -1,3 +1,4 @@
+import { readFromLocalStorage } from './storage.js';
 import Todo from './todo.js';
 
 export default class Project {

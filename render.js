@@ -1,6 +1,5 @@
 import { handleProjectClick, handleAddProject, handleTodoDetailClick, handleAddTodoClick, handleTodoDone } from "./events";
-import { getCurrentProject, setCurrentProject } from "./currentProject";
-
+import { getCurrentProject } from "./currentProject";
 
 export function renderProjects(projects) {
     const projectsContainer = document.getElementById('projects-container');
@@ -51,7 +50,6 @@ export function renderTodoLogicPanel() {
     todoLogicPanel.appendChild(addTodoDiv);
 }
 
-
 export function renderTodos(todos) {
     const todosContainer = document.getElementById('todos-container');
 
@@ -61,43 +59,11 @@ export function renderTodos(todos) {
         const todoItem = document.createElement('div');
         todoItem.classList.add('todo-item');
 
-        // Title
-        const titleArea = document.createElement('div');
-        titleArea.textContent = todo.title;
-        titleArea.classList.add('todo-detail');
-        titleArea.id = 'title-area';
-        titleArea.addEventListener('click', () => {
-            handleTodoDetailClick(titleArea, 'title', todo);
-        });
+        const titleArea = createTodoDetailElement(todo.title, 'title', todo);
+        const descriptionArea = createTodoDetailElement(todo.description, 'description', todo);
+        const dueDateArea = createTodoDetailElement(todo.dueDate, 'dueDate', todo);
+        const priorityArea = createTodoDetailElement(todo.priority, 'priority', todo);
 
-        // Description
-        const descriptionArea = document.createElement('div');
-        descriptionArea.textContent = todo.description;
-        descriptionArea.classList.add('todo-detail');
-        descriptionArea.id = 'description-area';
-        descriptionArea.addEventListener('click', () => {
-            handleTodoDetailClick(descriptionArea, 'description', todo);
-        });
-
-        // Due Date
-        const dueDateArea = document.createElement('div');
-        dueDateArea.textContent = todo.dueDate;
-        dueDateArea.classList.add('todo-detail');
-        dueDateArea.id = 'due-date-area';
-        dueDateArea.addEventListener('click', () => {
-            handleTodoDetailClick(dueDateArea, 'dueDate', todo);
-        });
-
-        // Priority
-        const priorityArea = document.createElement('div');
-        priorityArea.textContent = todo.priority;
-        priorityArea.classList.add('todo-detail');
-        priorityArea.id = 'priority-area';
-        priorityArea.addEventListener('click', () => {
-            handleTodoDetailClick(priorityArea, 'priority', todo);
-        });
-
-        // Done button
         const doneButton = document.createElement('button');
         doneButton.textContent = 'Done';
         doneButton.classList.add('todo-done-button');
@@ -105,21 +71,27 @@ export function renderTodos(todos) {
             handleTodoDone(todo);
         });
 
-        todoItem.appendChild(titleArea);
-        todoItem.appendChild(descriptionArea);
-        todoItem.appendChild(dueDateArea);
-        todoItem.appendChild(priorityArea);
-        todoItem.appendChild(doneButton);
-
+        appendTodoDetail(todoItem, titleArea);
+        appendTodoDetail(todoItem, descriptionArea);
+        appendTodoDetail(todoItem, dueDateArea);
+        appendTodoDetail(todoItem, priorityArea);
+        appendTodoDetail(todoItem, doneButton);
 
         todosContainer.appendChild(todoItem);
-
-        // todoItem.innerHTML = `
-        // <h1 class='todo-item-title'>${todo.title}</h1>
-        // <p class='todo-item-description'>${todo.description}</p>
-        // <p class='todo-item-due-date'>${todo.dueDate}</p>
-        // <p class='todo-item-priority'>${todo.priority}</p>
-        // `
-        // todosContainer.appendChild(todoItem);
     });
+}
+
+function createTodoDetailElement(content, area, todo) {
+    const detailArea = document.createElement('div');
+    detailArea.textContent = content;
+    detailArea.classList.add('todo-detail');
+    detailArea.id = `${area}-area`;
+    detailArea.addEventListener('click', () => {
+        handleTodoDetailClick(detailArea, area, todo);
+    });
+    return detailArea;
+}
+
+function appendTodoDetail(todoItem, detailArea) {
+    todoItem.appendChild(detailArea);
 }
