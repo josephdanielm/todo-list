@@ -118,9 +118,6 @@ img {
   height: auto;
 }
 
-/* Importing fonts */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500&family=Quattrocento:wght@400;700&display=swap');
-
 * {
   font-family: 'Manrope', sans-serif;
 }
